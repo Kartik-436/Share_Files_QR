@@ -75,8 +75,8 @@ const UploadPage = () => {
             return;
         }
 
-        if (files.length > 10) {
-            toast.warning('Maximum 10 files can be uploaded at once', {
+        if (files.length > 20) { // Updated from 10 to 20
+            toast.warning('Maximum 20 files can be uploaded at once', { // Updated message
                 position: "top-right",
                 theme: "dark",
             });
@@ -311,7 +311,7 @@ const UploadPage = () => {
 
                             <p className="text-gray-500 text-sm mt-2">
                                 or drag and drop files here<br />
-                                <span className="text-xs">(Maximum 10 files, 50MB each)</span>
+                                <span className="text-xs">(Maximum 20 files, 50MB each)</span> {/* Updated from 10 to 20 */}
                             </p>
                         </div>
 
@@ -321,76 +321,79 @@ const UploadPage = () => {
                                     {files.length} {files.length === 1 ? 'File' : 'Files'} Selected
                                 </h2>
 
-                                <ul className="space-y-2 mb-4 max-h-60 overflow-y-visible">
-                                    <AnimatePresence>
-                                        {files.map((fileObj) => (
-                                            <motion.li
-                                                key={fileObj.id}
-                                                initial={{ opacity: 0, x: -20 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                exit={{ opacity: 0, x: 20 }}
-                                                transition={{ duration: 0.2 }}
-                                                className="flex items-center text-sm p-2 rounded-md hover:bg-gray-50 group relative"
-                                                onMouseEnter={() => setHoveredFileId(fileObj.id)}
-                                                onMouseLeave={() => setHoveredFileId(null)}
-                                            >
-                                                <div className="mr-2 text-gray-500">
-                                                    {getFileTypeIcon(fileObj.file.type)}
-                                                </div>
-                                                <div
-                                                    className="truncate flex-1 cursor-pointer hover:text-blue-500 transition-colors"
-                                                    onClick={() => handleFilePreview(fileObj)}
+                                {/* Updated to have a fixed height with scroll if needed */}
+                                <div className="mb-4 overflow-hidden">
+                                    <ul className="space-y-2 max-h-60 overflow-y-auto pr-1 pb-1">
+                                        <AnimatePresence>
+                                            {files.map((fileObj) => (
+                                                <motion.li
+                                                    key={fileObj.id}
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    exit={{ opacity: 0, x: 20 }}
+                                                    transition={{ duration: 0.2 }}
+                                                    className="flex items-center text-sm p-2 rounded-md hover:bg-gray-50 group relative"
+                                                    onMouseEnter={() => setHoveredFileId(fileObj.id)}
+                                                    onMouseLeave={() => setHoveredFileId(null)}
                                                 >
-                                                    {fileObj.file.name}
-                                                </div>
-                                                <div className="text-xs text-gray-500 mx-2">
-                                                    {(fileObj.file.size / 1024).toFixed(1)} KB
-                                                </div>
-                                                <motion.button
-                                                    whileHover={{ scale: 1.1 }}
-                                                    whileTap={{ scale: 0.9 }}
-                                                    onClick={() => removeFile(fileObj.id)}
-                                                    className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                                                >
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                                                    </svg>
-                                                </motion.button>
-
-                                                {/* Thumbnail popup on hover - Always show for any file type */}
-                                                {hoveredFileId === fileObj.id && (
-                                                    <div className="absolute left-0 -top-24 z-10">
-                                                        <div className="bg-white rounded-lg shadow-xl p-2 border">
-                                                            {fileObj.file.type.startsWith('image/') ? (
-                                                                <img
-                                                                    src={fileObj.preview}
-                                                                    alt={fileObj.file.name}
-                                                                    className="max-h-20 max-w-full object-contain"
-                                                                />
-                                                            ) : (
-                                                                <div className="w-32 h-20 flex items-center justify-center">
-                                                                    <div className="text-center">
-                                                                        {getFileTypeIcon(fileObj.file.type)}
-                                                                        <p className="text-xs mt-1 truncate max-w-full">
-                                                                            {fileObj.file.name}
-                                                                        </p>
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                        </div>
+                                                    <div className="mr-2 text-gray-500">
+                                                        {getFileTypeIcon(fileObj.file.type)}
                                                     </div>
-                                                )}
-                                            </motion.li>
-                                        ))}
-                                    </AnimatePresence>
-                                </ul>
+                                                    <div
+                                                        className="truncate flex-1 cursor-pointer hover:text-blue-500 transition-colors"
+                                                        onClick={() => handleFilePreview(fileObj)}
+                                                    >
+                                                        {fileObj.file.name}
+                                                    </div>
+                                                    <div className="text-xs text-gray-500 mx-2">
+                                                        {(fileObj.file.size / 1024).toFixed(1)} KB
+                                                    </div>
+                                                    <motion.button
+                                                        whileHover={{ scale: 1.1 }}
+                                                        whileTap={{ scale: 0.9 }}
+                                                        onClick={() => removeFile(fileObj.id)}
+                                                        className="text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </motion.button>
+
+                                                    {/* Thumbnail popup on hover - Always show for any file type */}
+                                                    {hoveredFileId === fileObj.id && (
+                                                        <div className="absolute left-0 -top-24 z-10">
+                                                            <div className="bg-white rounded-lg shadow-xl p-2 border">
+                                                                {fileObj.file.type.startsWith('image/') ? (
+                                                                    <img
+                                                                        src={fileObj.preview}
+                                                                        alt={fileObj.file.name}
+                                                                        className="max-h-20 max-w-full object-contain"
+                                                                    />
+                                                                ) : (
+                                                                    <div className="w-32 h-20 flex items-center justify-center">
+                                                                        <div className="text-center">
+                                                                            {getFileTypeIcon(fileObj.file.type)}
+                                                                            <p className="text-xs mt-1 truncate max-w-full">
+                                                                                {fileObj.file.name}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                </motion.li>
+                                            ))}
+                                        </AnimatePresence>
+                                    </ul>
+                                </div>
                             </div>
                         )}
 
                         <motion.button
                             whileHover={{ scale: 1.02, backgroundColor: "#2563eb" }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full py-3 bg-blue-500 text-white font-medium rounded-lg transition-colors shadow-sm flex items-center justify-center space-x-2"
+                            className="w-full py-3 bg-blue-500 text-white font-medium rounded-lg transition-colors shadow-sm flex items-center justify-center space-x-2 mt-4"
                             onClick={handleUpload}
                             disabled={uploading || files.length === 0}
                         >
