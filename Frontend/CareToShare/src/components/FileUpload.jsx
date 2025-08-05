@@ -75,8 +75,8 @@ const UploadPage = () => {
             return;
         }
 
-        if (files.length > 20) { // Updated from 10 to 20
-            toast.warning('Maximum 20 files can be uploaded at once', { // Updated message
+        if (files.length > 50) { // Updated from 10 to 50
+            toast.warning('Maximum 50 files can be uploaded at once', { // Updated message
                 position: "top-right",
                 theme: "dark",
             });
@@ -311,7 +311,7 @@ const UploadPage = () => {
 
                             <p className="text-gray-500 text-sm mt-2">
                                 or drag and drop files here<br />
-                                <span className="text-xs">(Maximum 20 files, 50MB each)</span> {/* Updated from 10 to 20 */}
+                                <span className="text-xs">(Maximum 50 files, 10MB each)</span> {/* Updated from 10 to 20 */}
                             </p>
                         </div>
 
